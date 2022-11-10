@@ -30,7 +30,7 @@ function reducer (car, action) {
 }
 export default function Car() {
   const [car, dispatch] = useReducer(reducer, initState)
-  console.log(car)
+  console.log(car.started)
   return (
     <div className="car">
       <ReactSpeedometer
@@ -41,9 +41,11 @@ export default function Car() {
         paddingVertical={29}
         currentValueText={`Km/h ${car.speed}`}
       />
-      <button onClick={() => dispatch({ type: ACTIONS.TURN_ONOFF})}>an/auschalten</button>
-      <button onClick={() => dispatch({ type: ACTIONS.ACELERATE})}>gas geben</button>
-      <button onClick={() => dispatch({ type: ACTIONS.BRAKE})}>bremsen</button>
+      <div className="toggles">
+        <button className={car.started? "red" : "green"} onClick={() => dispatch({ type: ACTIONS.TURN_ONOFF})}>{car.started? "auschalten" : "anchalten"}</button>
+        <button onClick={() => dispatch({ type: ACTIONS.ACELERATE})}>gas geben</button>
+        <button onClick={() => dispatch({ type: ACTIONS.BRAKE})}>bremsen</button>
+      </div>
     </div>
 
   );
