@@ -1,19 +1,50 @@
 import React from "react";
-import useReducer from "react";
+// import ReactDOM from "react-dom";
+import ReactSpeedometer from "react-d3-speedometer";
+import { useReducer } from "react";
+const initState = {
+  started: false,
+  speed: 0
+}
 export const ACTIONS = {
   TURN_ONOFF: "turn-onoff",
-  ACELERATE: "acelerete",
+  ACELERATE: "acelerate",
   BRAKE: "brake"
 }
-function reducer (auto, action) {
+function reducer (car, action) {
   switch (action.type) {
-    case TURN_ONOFF  : 
-    if(auto.id === action.payload.id) {
-      return { ...auto, complete: !auto.complete }
-    }
-    return auto
+    case ACTIONS.TURN_ONOFF: 
+    
+      return { ...car, started: !car.started }
+
+    
+    case ACTIONS.ACELERATE: 
+    
+      return { ...car, speed: 5 }
+    case ACTIONS.BRAKE: 
+    
+      return { ...car, speed: 0 }
+    
+    
   }
 }
 export default function Car() {
-  return <div className="car">Make your instrument cluster here</div>;
+  const [car, dispatch] = useReducer(reducer, initState)
+  console.log(car)
+  return (
+    <div className="car">
+      <ReactSpeedometer
+        value={car.speed}
+        labelFontSize={"31px"}
+        valueTextFontSize={"37px"}
+        paddingHorizontal={29}
+        paddingVertical={29}
+        currentValueText={`Km/h ${car.speed}`}
+      />
+      <button onClick={() => dispatch({ type: ACTIONS.TURN_ONOFF})}>an/auschalten</button>
+      <button onClick={() => dispatch({ type: ACTIONS.ACELERATE})}>gas geben</button>
+      <button onClick={() => dispatch({ type: ACTIONS.BRAKE})}>bremsen</button>
+    </div>
+
+  );
 }
