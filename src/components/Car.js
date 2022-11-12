@@ -1,5 +1,4 @@
 import React from "react";
-// import ReactDOM from "react-dom";
 import ReactSpeedometer from "react-d3-speedometer";
 import { useReducer } from "react";
 const initState = {
@@ -14,37 +13,38 @@ export const ACTIONS = {
 function reducer (car, action) {
   switch (action.type) {
     case ACTIONS.TURN_ONOFF: 
-    
-      return { ...car, started: !car.started }
+      if (car.speed == 0)
+        return { ...car, started: !car.started }
+      else return car
+    case ACTIONS.ACELERATE:
+      if (car.started && car.speed < 1000) 
+        return { ...car, speed: car.speed + 100 }
+      else return car
 
-    
-    case ACTIONS.ACELERATE: 
-    
-      return { ...car, speed: 5 }
     case ACTIONS.BRAKE: 
-    
-      return { ...car, speed: 0 }
-    
+      if (car.speed > 0)
+        return { ...car, speed: car.speed - 100 }
+      else return car
     
   }
 }
 export default function Car() {
   const [car, dispatch] = useReducer(reducer, initState)
-  console.log(car.started)
+  console.log(car)
   return (
     <div className="car">
-      <ReactSpeedometer
+      {car.started? <ReactSpeedometer
         value={car.speed}
         labelFontSize={"31px"}
         valueTextFontSize={"37px"}
         paddingHorizontal={29}
         paddingVertical={29}
         currentValueText={`Km/h ${car.speed}`}
-      />
+      /> : <h3>ausgechalted</h3>}
       <div className="toggles">
-        <button className={car.started? "red" : "green"} onClick={() => dispatch({ type: ACTIONS.TURN_ONOFF})}>{car.started? "auschalten" : "anchalten"}</button>
-        <button onClick={() => dispatch({ type: ACTIONS.ACELERATE})}>gas geben</button>
-        <button onClick={() => dispatch({ type: ACTIONS.BRAKE})}>bremsen</button>
+        <button className={car.started? "red" : "green"} onClick={() => dispatch({ type: ACTIONS.TURN_ONOFF})}>{car.started? "OFF" : "ON"}</button>
+        <button className={car.started? "green" : "red" } onClick={() => dispatch({ type: ACTIONS.ACELERATE })}>gas geben</button>
+        <button className={car.started? "green" : "red" } onClick={() => dispatch({ type: ACTIONS.BRAKE })}>bremsen</button>
       </div>
     </div>
 

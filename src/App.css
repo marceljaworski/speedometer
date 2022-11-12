@@ -16,8 +16,9 @@ body {
 }
 
 .car {
-  background-color: rgba(255, 255, 255, 0.472);
-  
+  background-color: rgba(0, 0, 0, 0.632);
+  padding-inline: 0.5rem;
+  border-radius: 15px;
 }
 .toggles {
   display: flex;
@@ -33,10 +34,12 @@ button {
   color: antiquewhite;
   height: 2rem;
   background-color: black;
+  cursor: pointer;
+
 }
 .green {
-  background-color: green;
+  border: solid 1px green;
 }
 .red {
-  background-color: red;
+  border: solid 1px red;
 }
